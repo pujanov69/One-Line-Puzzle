@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.ArrayList;
+
 
 public class BaseActor extends Actor {
 
@@ -257,4 +259,36 @@ public class BaseActor extends Actor {
         // reset acceleration
         accelerationVec.set(0,0);
     }
+
+    public Vector2 preventOverlap(BaseActor other) {
+        Polygon poly1 = this.getBoundaryPolygon();
+        Polygon poly2 = other.getBoundaryPolygon();
+        // initial test to improve performance
+        if ( !poly1.getBoundingRectangle().overlaps(poly2.getBoundingRectangle()) )
+            return null;
+        Intersector.MinimumTranslationVector mtv = new Intersector.MinimumTranslationVector();
+        boolean polygonOverlap = Intersector.overlapConvexPolygons(poly1, poly2, mtv);
+        if ( !polygonOverlap )
+            return null;
+        this.moveBy( mtv.normal.x * mtv.depth, mtv.normal.y * mtv.depth );
+        return mtv.normal;
+    }
+
+    public static ArrayList<BaseActor> getList(Stage stage, String className) {
+        ArrayList<BaseActor> list = new ArrayList<BaseActor>();
+        Class theClass = null;
+        try    {  theClass = Class.forName(className);  }
+        catch (Exception error)    {  error.printStackTrace();  }
+
+        for (Actor a : stage.getActors())    {
+            if ( theClass.isInstance( a ) )
+                list.add( (BaseActor)a );
+        }
+        return list;
+    }
+
+    public static int count(Stage stage, String className) {
+        return getList(stage, className).size();
+    }
+
 }
