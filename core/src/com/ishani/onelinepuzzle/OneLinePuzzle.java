@@ -25,8 +25,10 @@ public class OneLinePuzzle extends GameBeta {
 	@Override
 	public void initialize() {
 		BaseActor ocean = new BaseActor(0,0, mainStage);
-		ocean.loadTexture("water.jpg");
-		ocean.setSize(800, 600);
+		ocean.loadTexture("water-border.jpg");
+		ocean.setSize(1200, 900);
+
+		BaseActor.setWorldBounds(ocean);
 
 		new Starfish(400,400, mainStage);
 		new Starfish(500,100, mainStage);
@@ -65,7 +67,7 @@ public class OneLinePuzzle extends GameBeta {
 		}
 		if (BaseActor.count(mainStage, "com.ishani.onelinepuzzle.actors.Starfish") == 0 && !win) {
 			win = true;
-			BaseActor youWinMessage = new BaseActor(0, 0, mainStage);
+			BaseActor youWinMessage = new BaseActor(0, 0, uiStage);
 			youWinMessage.loadTexture("you-win.png");
 			youWinMessage.centerAtPosition(400, 300);
 			youWinMessage.setOpacity(0);

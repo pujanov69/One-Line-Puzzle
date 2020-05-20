@@ -1,6 +1,7 @@
 package com.ishani.onelinepuzzle.actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -9,10 +10,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 
@@ -32,6 +35,8 @@ public class BaseActor extends Actor {
 
     private Polygon boundaryPolygon;
 
+    private static Rectangle worldBounds;
+
 
     public BaseActor(float x, float y, Stage s) {
         super();
@@ -49,6 +54,27 @@ public class BaseActor extends Actor {
         maxSpeed = 1000;
         deceleration = 0;
 
+    }
+
+    public static void setWorldBounds(float width, float height) {
+        worldBounds = new Rectangle( 0,0, width, height );
+    }
+    public static void setWorldBounds(BaseActor ba) {
+        setWorldBounds( ba.getWidth(), ba.getHeight() );
+    }
+
+    public void boundToWorld() {
+        // check left edge
+        if (getX() < 0)        setX(0);
+        // check right edge
+        if (getX() + getWidth() > worldBounds.width)
+            setX(worldBounds.width - getWidth());
+        // check bottom edge
+        if (getY() < 0)
+            setY(0);
+        // check top edge
+          if (getY() + getHeight() > worldBounds.height)
+              setY(worldBounds.height - getHeight());
     }
 
     public void setBoundaryRectangle() {
@@ -143,7 +169,19 @@ public class BaseActor extends Actor {
 
 
 
-    public void setAnimation(Animation<TextureRegion> anim){
+    public void alignCamera() {
+        Camera cam = this.getStage().getCamera();
+        Viewport v = this.getStage().getViewport();
+        // center camera on actor
+        cam.position.set( this.getX() + this.getOriginX(), this.getY() + this.getOriginY(), 0 );
+        // bound camera to layout
+        cam.position.x = MathUtils.clamp(cam.position.x, cam.viewportWidth/2,  worldBounds.width -  cam.viewportWidth/2);
+        cam.position.y = MathUtils.clamp(cam.position.y, cam.viewportHeight/2, worldBounds.height - cam.viewportHeight/2);
+        cam.update();
+    }
+
+
+        public void setAnimation(Animation<TextureRegion> anim){
         animation = anim;
         TextureRegion tr = animation.getKeyFrame(0);
         float w = tr.getRegionWidth();
