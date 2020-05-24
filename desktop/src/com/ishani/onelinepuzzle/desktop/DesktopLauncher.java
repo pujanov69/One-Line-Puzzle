@@ -2,7 +2,6 @@ package com.ishani.onelinepuzzle.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.ishani.onelinepuzzle.OneLinePuzzle;
 import com.ishani.onelinepuzzle.StarfishGame;
 
 public class DesktopLauncher {

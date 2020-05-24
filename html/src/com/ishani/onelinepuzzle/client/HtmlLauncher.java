@@ -3,7 +3,6 @@ package com.ishani.onelinepuzzle.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.ishani.onelinepuzzle.OneLinePuzzle;
 
 public class HtmlLauncher extends GwtApplication {
 
