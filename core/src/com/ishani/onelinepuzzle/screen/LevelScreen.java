@@ -1,6 +1,8 @@
 package com.ishani.onelinepuzzle.screen;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.ishani.onelinepuzzle.actors.BaseActor;
 import com.ishani.onelinepuzzle.actors.Rock;
 import com.ishani.onelinepuzzle.actors.Starfish;
@@ -11,6 +13,8 @@ public class LevelScreen extends BaseScreen {
 
     private Turtle turtle;
     private boolean win;
+
+    //private Texture btnGetReferral, btnSetReferral;
 
     @Override
     public void initialize() {
